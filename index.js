@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import './package/header/header.sass';
+import './package/strawberry.scss';
 
 function component() {
     const element = document.createElement('div');

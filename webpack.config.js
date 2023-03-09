@@ -4,10 +4,11 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    index: ['./index.js', './package/header/header.sass']
+    main: ["./index.js", "./package/strawberry.scss"],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
+    filename: "js/[name].js",
     clean: true,
     publicPath: '/',
   },
@@ -22,15 +23,26 @@ module.exports = {
       template: './index.html'
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-  }),
+      filename: 'css/[name].css',
+    }),
   ],
   module: {
     rules: [
       {
-        test: /\.sass$/,
-        use: [ 'style-loader', 'css-loader', 'sass-loader' ]
-      }
+        test: /\.s[ac]ss$/i,
+        include: [
+          path.resolve(__dirname, 'package'),
+          path.resolve(__dirname, 'package/button'),
+          path.resolve(__dirname, 'package/heading')
+        ],
+        use: [ MiniCssExtractPlugin.loader, 'css-loader', 
+        {
+          loader: 'sass-loader',
+        }],
+        resolve: {
+          extensions: ['.scss', '.sass', '.css']
+        }
+      },
     ]
   }
 };
