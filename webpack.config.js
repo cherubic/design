@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    main: ["./index.js", "./package/strawberry.scss"],
+    main: ["./index.js"],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -31,11 +31,12 @@ module.exports = {
       {
         test: /\.s[ac]ss$/i,
         include: [
-          path.resolve(__dirname, 'package'),
-          path.resolve(__dirname, 'package/button'),
-          path.resolve(__dirname, 'package/heading')
+          path.resolve(__dirname, 'package/styles'),
+          path.resolve(__dirname, 'package/styles/button'),
+          path.resolve(__dirname, 'package/styles/heading'),
+          path.resolve(__dirname, 'package/fonts/MiSans')
         ],
-        use: [ MiniCssExtractPlugin.loader, 'css-loader', 
+        use: [ MiniCssExtractPlugin.loader, 'css-loader',
         {
           loader: 'sass-loader',
         }],
@@ -43,6 +44,21 @@ module.exports = {
           extensions: ['.scss', '.sass', '.css']
         }
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        include: [
+          path.resolve(__dirname, 'package/fonts/HarmonyOS_Sans'),
+          path.resolve(__dirname, 'package/fonts/MiSans'),
+          path.resolve(__dirname, 'package/fonts/NotoSans'),
+        ],
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name].[hash:6][ext]'
+        },
+        use: {
+          loader: 'url-loader',
+        }
+      }
     ]
   }
 };

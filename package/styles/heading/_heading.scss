@@ -1,0 +1,11 @@
+$font-color: #fca311;
+
+@font-face {
+  font-family: 'NotoSans';
+  src: url('../fonts/MiSans/MiSans-Normal.ttf') format('truetype');
+}
+
+h1 {
+  color: $font-color;
+  font-family: 'NotoSans';
+}
