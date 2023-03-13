@@ -1,11 +1,28 @@
-$font-color: #fca311;
+@import '../common/variables';
 
-@font-face {
-  font-family: 'NotoSans';
-  src: url('../fonts/MiSans/MiSans-Normal.ttf') format('truetype');
-}
+$heading-font-sizes: (
+  h1: 2.5rem,
+  h2: 2rem,
+  h3: 1.5rem,
+  h4: 1.25rem,
+  h5: 1rem,
+  h6: 0.875rem
+);
 
-h1 {
-  color: $font-color;
-  font-family: 'NotoSans';
+$heading-line-heights: (
+  h1: 3.5rem,
+  h2: 3rem,
+  h3: 2.5rem,
+  h4: 2rem,
+  h5: 1.5rem,
+  h6: 1.25rem
+);
+
+@each $header, $font-size in $heading-font-sizes {
+  #{$header} {
+    color: $coler-purpleBlue;
+    font-family: $bold-font-family;
+    font-size: $font-size;
+    line-height: map-get($heading-line-heights, $header);
+  }
 }

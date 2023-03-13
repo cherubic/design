@@ -2,6 +2,32 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
+function tryResolve_(url, sourceFilename) {
+  // Put require.resolve in a try/catch to avoid node-sass failing with cryptic libsass errors
+  // when the importer throws
+  try {
+    return require.resolve(url, { paths: [path.dirname(sourceFilename)] });
+  } catch (e) {
+    return '';
+  }
+}
+
+function tryResolveScss(url, sourceFilename) {
+  // Support omission of .scss and leading _
+  const normalizedUrl = url.endsWith('.scss') ? url : `${url}.scss`;
+  return tryResolve_(normalizedUrl, sourceFilename) ||
+    tryResolve_(path.join(path.dirname(normalizedUrl), `_${path.basename(normalizedUrl)}`),
+      sourceFilename);
+}
+
+function materialImporter(url, prev) {
+  if (url.startsWith('@material')) {
+    const resolved = tryResolveScss(url, prev);
+    return { file: resolved || url };
+  }
+  return { file: url };
+}
+
 module.exports = {
   entry: {
     main: ["./index.js"],
@@ -14,8 +40,9 @@ module.exports = {
   },
   mode: 'development',
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    static: path.resolve(__dirname, 'dist'),
     port: 9000,
+    hot: true
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -30,33 +57,40 @@ module.exports = {
     rules: [
       {
         test: /\.s[ac]ss$/i,
-        include: [
-          path.resolve(__dirname, 'package/styles'),
-          path.resolve(__dirname, 'package/styles/button'),
-          path.resolve(__dirname, 'package/styles/heading'),
-          path.resolve(__dirname, 'package/fonts/MiSans')
-        ],
-        use: [ MiniCssExtractPlugin.loader, 'css-loader',
-        {
-          loader: 'sass-loader',
-        }],
-        resolve: {
-          extensions: ['.scss', '.sass', '.css']
-        }
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'resolve-url-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: () => [
+                  require('autoprefixer')
+                ], 
+                sourceMap: true,
+              }
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          }],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        exclude: /node_modules/,
         include: [
+          path.resolve(__dirname, 'package/fonts'),
           path.resolve(__dirname, 'package/fonts/HarmonyOS_Sans'),
           path.resolve(__dirname, 'package/fonts/MiSans'),
           path.resolve(__dirname, 'package/fonts/NotoSans'),
         ],
         type: 'asset/resource',
         generator: {
-          filename: 'fonts/[name].[hash:6][ext]'
-        },
-        use: {
-          loader: 'url-loader',
+          filename: 'asserts/fonts/[name][ext]'
         }
       }
     ]

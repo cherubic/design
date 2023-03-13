@@ -1,0 +1,28 @@
+// Font
+@font-face {
+    font-family: 'Noto Sans';
+    src: url("../../fonts/NotoSans/NotoSansSC-Regular.otf") format("opentype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Noto Sans Bold';
+    src: url('../../fonts/NotoSans/NotoSansSC-Bold.otf') format('opentype');
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Mi Sans Regular';
+    src: url("../../fonts/MiSans/MiSans-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Mi Sans Semibold';
+    src: url("../../fonts/MiSans/MiSans-Semibold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
