@@ -28,6 +28,7 @@
 }
 
 
-$font-family-sans-serif: 'Mi Sans Regular', 'Noto Sans', sans-serif;
-$font-family-serif: 'Mi Sans Regular', 'Noto Sans', serif;
-$font-family-monospace: 'Mi Sans Regular', 'Noto Sans', monospace;
+// bootstrap 中字体默认变量
+$font-family-sans-serif: 'Mi Sans Regular', 'Noto Sans', "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-serif: 'Mi Sans Regular', 'Noto Sans', Georgia, Cambria, "Times New Roman", Times, serif;
+$font-family-monospace: 'Mi Sans Regular', 'Noto Sans', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
